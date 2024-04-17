@@ -1,6 +1,7 @@
 package uk.ac.tees.scedt.mad.u0026939.myapplication
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,35 +16,35 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-@Composable
-fun SimpleForm(person: Person = Person()) {
-    Column {
-        OutlinedTextField(
-            value = person.name,
-            modifier = Modifier.padding(all = 8.dp),
-            onValueChange = { person.name = it },
-            label = { Text("Name") }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(
-            value = person.age.toString(),
-            modifier = Modifier.padding(all = 8.dp),
-            onValueChange = { person.age = it.toIntOrNull() ?: 0 },
-            label = { Text("Age") }
-        )
-    }
-}
+//@Composable
+//fun SimpleForm(person: Person = Person()) {
+//    Column {
+//        OutlinedTextField(
+//            value = person.name,
+//            modifier = Modifier.padding(all = 8.dp),
+//            onValueChange = { person.name = it },
+//            label = { Text("Name") }
+//        )
+//        Spacer(modifier = Modifier.height(8.dp))
+//        OutlinedTextField(
+//            value = person.age.toString(),
+//            modifier = Modifier.padding(all = 8.dp),
+//            onValueChange = { person.age = it.toIntOrNull() ?: 0 },
+//            label = { Text("Age") }
+//        )
+//    }
+//}
 
 @Composable
 fun DndCharacterForm(char: Character = Character()) {
-    var name = remember(char) { mutableStateOf(char.name) }
-    var classType = remember(char) { mutableStateOf(char.classType) }
-    var STR = remember(char) { mutableIntStateOf(char.STR) }
-    var DEX = remember(char) { mutableIntStateOf(char.DEX) }
-    var CON = remember(char) { mutableIntStateOf(char.CON) }
-    var INT = remember(char) { mutableIntStateOf(char.INT) }
-    var WIS = remember(char) { mutableIntStateOf(char.WIS) }
-    var CHA = remember(char) { mutableIntStateOf(char.CHA) }
+    val name = remember(char) { mutableStateOf(char.name) }
+    val classType = remember(char) { mutableStateOf(char.classType) }
+    val STR = remember(char) { mutableIntStateOf(char.STR) }
+    val DEX = remember(char) { mutableIntStateOf(char.DEX) }
+    val CON = remember(char) { mutableIntStateOf(char.CON) }
+    val INT = remember(char) { mutableIntStateOf(char.INT) }
+    val WIS = remember(char) { mutableIntStateOf(char.WIS) }
+    val CHA = remember(char) { mutableIntStateOf(char.CHA) }
 
     Column {
         OutlinedTextField(
@@ -62,60 +63,67 @@ fun DndCharacterForm(char: Character = Character()) {
                 .fillMaxWidth(),
             label = { Text("Class") },
         )
-        OutlinedTextField(
-            value = STR.intValue.toString(),
-            onValueChange = { it: String -> STR.intValue = it.toIntOrNull() ?: 0 },
-            modifier = Modifier
-                .padding(all = 8.dp)
-                .fillMaxWidth(),
-            label = { Text("Strength") }
-        )
-        OutlinedTextField(
-            value = DEX.intValue.toString(),
-            onValueChange = { it: String -> DEX.intValue = it.toIntOrNull() ?: 0 },
-            modifier = Modifier
-                .padding(all = 8.dp)
-                .fillMaxWidth(),
-            label = { Text("Dexterity") }
-        )
-        OutlinedTextField(
-            value = CON.intValue.toString(),
-            onValueChange = { it: String -> CON.intValue = it.toIntOrNull() ?: 0 },
-            modifier = Modifier
-                .padding(all = 8.dp)
-                .fillMaxWidth(),
-            label = { Text("Constitution") }
-        )
-        OutlinedTextField(
-            value = INT.intValue.toString(),
-            onValueChange = { it: String -> char.INT = it.toIntOrNull() ?: 0 },
-            modifier = Modifier
-                .padding(all = 8.dp)
-                .fillMaxWidth(),
-            label = { Text("Intelligence") }
-        )
-        OutlinedTextField(
-            value = WIS.intValue.toString(),
-            onValueChange = { it: String -> WIS.intValue = it.toIntOrNull() ?: 0 },
-            modifier = Modifier
-                .padding(all = 8.dp)
-                .fillMaxWidth(),
-            label = { Text("Wisdom") }
-        )
-        OutlinedTextField(
-            value = CHA.toString(),
-            onValueChange = { it: String -> CHA.intValue = it.toIntOrNull() ?: 0 },
-            modifier = Modifier
-                .padding(all = 8.dp)
-                .fillMaxWidth(),
-            label = { Text("Charisma") }
-        )
-        Button(
-            onClick = { /*TODO*/ },
-            modifier = Modifier
-                .padding(all = 8.dp)
-        ) {
-            Text("Save")
+        FillableStat(label = "Strength",
+            value = STR.intValue,
+            onValueChange = { STR.intValue = it })
+        FillableStat(label = "Dexterity",
+            value = DEX.intValue,
+            onValueChange = { DEX.intValue = it })
+        FillableStat(label = "Constitution",
+            value = CON.intValue,
+            onValueChange = { CON.intValue = it })
+        FillableStat(label = "Intelligence",
+            value = INT.intValue,
+            onValueChange = { INT.intValue = it })
+        FillableStat(label = "Wisdom",
+            value = WIS.intValue,
+            onValueChange = { WIS.intValue = it })
+        FillableStat(label = "Charisma",
+            value = CHA.intValue,
+            onValueChange = { CHA.intValue = it })
+        Row {
+            Button(
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .padding(all = 8.dp)
+            ) {
+                Text("Save")
+            }
+            Button(
+                onClick = {
+                    STR.intValue = rollStat()
+                    DEX.intValue = rollStat()
+                    CON.intValue = rollStat()
+                    INT.intValue = rollStat()
+                    WIS.intValue = rollStat()
+                    CHA.intValue = rollStat()
+                },
+                modifier = Modifier
+                    .padding(all = 8.dp)
+            ) {
+                Text("Randomize")
+            }
         }
+
     }
+}
+
+fun rollStat(): Int {
+    return (1..4).map { (1..6).random() }.sorted().drop(1).sum()
+}
+
+@Composable
+fun FillableStat(
+    label: String,
+    value: Int,
+    onValueChange: (Int) -> Unit
+) {
+    OutlinedTextField(
+        value = value.toString(),
+        onValueChange = { onValueChange(it.toIntOrNull() ?: 0) },
+        modifier = Modifier
+            .padding(all = 8.dp)
+            .fillMaxWidth(),
+        label = { Text(label) }
+    )
 }
