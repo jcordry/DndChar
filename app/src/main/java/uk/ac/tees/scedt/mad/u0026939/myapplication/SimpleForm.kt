@@ -16,29 +16,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-//@Composable
-//fun SimpleForm(person: Person = Person()) {
-//    Column {
-//        OutlinedTextField(
-//            value = person.name,
-//            modifier = Modifier.padding(all = 8.dp),
-//            onValueChange = { person.name = it },
-//            label = { Text("Name") }
-//        )
-//        Spacer(modifier = Modifier.height(8.dp))
-//        OutlinedTextField(
-//            value = person.age.toString(),
-//            modifier = Modifier.padding(all = 8.dp),
-//            onValueChange = { person.age = it.toIntOrNull() ?: 0 },
-//            label = { Text("Age") }
-//        )
-//    }
-//}
-
 @Composable
 fun DndCharacterForm(char: Character = Character()) {
     val name = remember(char) { mutableStateOf(char.name) }
     val classType = remember(char) { mutableStateOf(char.classType) }
+    val race = remember(char) { mutableStateOf(char.race) }
     val STR = remember(char) { mutableIntStateOf(char.STR) }
     val DEX = remember(char) { mutableIntStateOf(char.DEX) }
     val CON = remember(char) { mutableIntStateOf(char.CON) }
@@ -62,6 +44,14 @@ fun DndCharacterForm(char: Character = Character()) {
                 .padding(all = 8.dp)
                 .fillMaxWidth(),
             label = { Text("Class") },
+        )
+        OutlinedTextField(
+            value = race.value,
+            onValueChange = { race.value = it },
+            modifier = Modifier
+                .padding(all = 8.dp)
+                .fillMaxWidth(),
+            label = { Text("Race") },
         )
         FillableStat(label = "Strength",
             value = STR.intValue,
